@@ -1,7 +1,7 @@
 const Discord = require('discord.js');
 const bot = new Discord.Client();
 const axios = require('axios');
-const token = 'NzA0NTU3NDkyNzEzMDI5NjMz.Xqe4xw.w-Tdyr0JrTpsrVwPBIjwoilySoY';
+const token = 'INSERT KEY HERE';
 const PREFIX = "!";
 const fetch = require('node-fetch');
 var version ='1.0'
@@ -13,10 +13,25 @@ bot.on('ready', () =>{
 
 
 
+/// canciones
+var rndSong = require('rnd-song');
+ 
+var options = {
+  api_key: '4e6fe51f2cb7946b347b31a546b5e99a',
+  genre: 14,
+  snippet: true,
+  language: 'en'
+};
+
+
+  
+//// end canciones
+
+
 bot.on('message', async message =>{
 
     let args = message.content.substring(PREFIX.length).split(" ");
-//
+//cases with prefix
     switch(args[0]){
         case 'ping':
             message.channel.send('pong!');
@@ -56,11 +71,42 @@ bot.on('message', async message =>{
             let value = userName.concat(' Eat shit, asshole! Fall of your horse!', '!'); 
             message.channel.send(value);
         break;  
+        
+        case 'stando':
+    rndSong(options, function(err, res) {
+        var UrlStand = 'https://robohash.org/';
+        if (!err) {
+        let args2 = res.track.track_name.split(" ");
+        let args3 = res.track.artist_name.split(" ");
+        var standName = args2[0]+args3[0];
+        message.reply(`Stand name args2:` +standName);
+        message.reply(UrlStand+standName);
+        message.reply(`Your stand says: ${res.snippet.snippet_body}`);
+        message.reply(`Song Name:  ${res.track.track_name}`);
+        message.reply(`Artist: ${res.track.artist_name}`);
+    } else {  message.reply(new Error(err)); }
+  });
+
+  break;
+  
+
+
+
+            ////////canciones
+            
+
+
+
+
+/// end canciones
+
+
+        
 
         
     }
 
-    
+    //jokes
     if(message.content === 'joke'){
         let getJoke = async () =>{
             let response = await axios.get(
@@ -76,7 +122,7 @@ bot.on('message', async message =>{
         message.channel.send(jokeValue);
     }
 
-    
+    //cats
     if (message.content === 'cat') {
         const { file } = await fetch('https://aws.random.cat/meow').then(response => response.json());
     
@@ -84,9 +130,10 @@ bot.on('message', async message =>{
     }
 
 
-//code for horse
+//code for horse and foff
     if(message.content === 'horse'){
         message.reply('Tell him to go eat shit, Johny.');
+        
     }
 
 
@@ -98,4 +145,6 @@ bot.on('message', async message =>{
 
 
 
+
+//login
 bot.login(token);
